@@ -1,0 +1,56 @@
+Shiny app: effects of different linkage methods on the hierarchical clustering
+========================================================
+author: Ming Tang
+date: `r date()`
+width: 1440
+height: 900
+Introduction of the app
+========================================================
+
+- ncidat is the microarray gene expression data for different cancer types
+- `hclust` command is used to do the hierachical clustering
+- linkage methods: "ward.D", "ward.D2", "single", "complete", "average" are used to test the clustering effect
+
+The data structure
+========================================================
+
+
+```{r}
+# install the package if you do not have it.
+# install.packages("ISLR")
+library(ISLR)
+ncidat = t(NCI60$data)
+colnames(ncidat) = NCI60$labs
+# how many genes and samples in the data matrix?
+dim(ncidat)
+# what are the samples
+unique(colnames(ncidat))
+
+```
+
+
+Complete linkage
+========================================================
+Different likages give you different clusters.
+For example: complete linkage.
+
+```{r echo=FALSE,fig.width= 12, fig.height=9,fig.align='center'}
+cols = as.numeric(as.factor(colnames(ncidat)))
+Dmat = dist(t(ncidat))
+com.hclust = hclust(Dmat,method="complete")
+# library(devtools) # get from CRAN with install.packages("devtools")
+# install_github("ririzarr/rafalib")
+library(rafalib)
+# use function in rafalib to plot colored dendragram
+myplclust(com.hclust, labels=colnames(ncidat), lab.col=as.fumeric(colnames(ncidat)), main = "complete linkage")
+rect.hclust(com.hclust,k=9)
+```
+
+Play with the shiny app
+========================================================
+Access the app on [shinyapps](https://divingintogeneticsandgenomics.shinyapps.io/shiny_App)
+
+choose different linkage methods and cluster numbers to see the effect.
+
+
+
